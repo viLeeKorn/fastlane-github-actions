@@ -1,38 +1,25 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
+fastlane_require 'dotenv'
 
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
-default_platform(:android)
+before_all do
+  Dotenv.overload('.env')
+end
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
-  end
+  desc "RN Production App"
+  branch = git_branch
+  commit = last_git_commit
+  lane :distribute do
+    gradle(task: 'clean assembleRelease', project_dir: './android', print_command: false, properties: {
+      "ANDROID_UPLOAD_STORE_FILE" => ENV["ANDROID_UPLOAD_STORE_FILE"],
+      "ANDROID_UPLOAD_STORE_PASSWORD" => ENV["ANDROID_UPLOAD_STORE_PASSWORD"],
+      "ANDROID_UPLOAD_KEY_ALIAS" => ENV["ANDROID_UPLOAD_KEY_ALIAS"],
+      "ANDROID_UPLOAD_KEY_PASSWORD" => ENV["ANDROID_UPLOAD_KEY_PASSWORD"]
+    })
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
-  end
-
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+    firebase_app_distribution(
+      app: "1:550242178970:android:5668a8a010e37d0c590c23",
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      release_notes: "Built from BRANCH: #{branch} COMMIT: #{commit}",
+    )
   end
 end
