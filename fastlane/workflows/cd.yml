@@ -1,0 +1,61 @@
+name: deploy_to_fb_and_bump_tag
+
+on:
+  push:
+    branches: - master
+
+jobs:
+  build-production:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository on Github VM          echo "${{ secrets.ANDROID_UPLOAD_STORE_FILE}}" > release-key.keystore
+        uses: actions/checkout@v2
+                run: |
+          echo "${{ secrets.ANDROID_UPLOAD_STORE_FILE}}" > release-key.keystore.asc
+          gpg -d passphrase "${{ secrests.ANDROID_UPLOAD_STORE_FILE_PASSPHRASE }}" --batch release-key.keystore.asc > android/app/release-key.keystore
+
+      - name: Run Node in VM
+        uses: actions/setup-node@master
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.6
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Fastlane
+        run: |
+          bundle install
+          bundle update fastlane
+      - name: Build and Publish Mobile App
+        run: |
+          bundle exec fastlane android all_lanes
+        env:
+          ANDROID_UPLOAD_KEY_ALIAS:       "${{ secrests.ANDROID_UPLOAD_KEY_ALIAS }}"
+          ANDROID_UPLOAD_STORE_PASSWORD:  "${{ secrests.ANDROID_UPLOAD_STORE_PASSWORD }}"
+          ANDROID_UPLOAD_KEY_PASSWORD:    "${{ secrests.ANDROID_UPLOAD_KEY_PASSWORD }}"
+          FIREBASE_CLI_TOKEN:             "${{ secrests.FIREBASE_CLI_TOKEN }}"
+        
+  tag-version-release:
+    needs: build-production
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        run
+      - uses: actions/setup-node@master
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Get Version Number
+        run: |
+          git config --local user.email "vileekorn@gmail.com"
+          git config --local user.name "viLeeKorn"
+          export PACKAGE_VERSION=$(node -p -e 'require("./package.json").version')
+          git tag -a "$PACKAGE_VERSION" -m "latest version"
+          git push origin --tags
