@@ -13,10 +13,14 @@ jobs:
       - name: Checkout Repository on Github VM
         uses: actions/checkout@v2
 
-      - name: Decrypting keystore
-        run: |
-          echo "${{ secrets.ANDROID_UPLOAD_STORE_FILE}}" > release-key.keystore.asc
-          gpg -d passphrase "${{ secrets.ANDROID_UPLOAD_STORE_FILE_PASSPHRASE }}" --batch release-key.keystore.asc > android/app/release-key.keystore
+      - name: Decrypting android keys
+        run: sh ./.github/scripts/decrypt_android_keys.sh
+        env:
+          ANDROID_UPLOAD_STORE_FILE: '${{ secrets.ANDROID_UPLOAD_STORE_FILE }}'
+          ANDROID_UPLOAD_STORE_FILE_PASSPHRASE: '${{ secrets.ANDROID_UPLOAD_STORE_FILE_PASSPHRASE }}'
+          ANDROID_UPLOAD_KEY_ALIAS: '${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}'
+          ANDROID_UPLOAD_STORE_PASSWORD: '${{ secrets.ANDROID_UPLOAD_STORE_PASSWORD }}'
+          ANDROID_UPLOAD_KEY_PASSWORD: '${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}'
 
       - name: Run Node in VM
         uses: actions/setup-node@master
