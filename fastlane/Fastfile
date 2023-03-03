@@ -40,8 +40,9 @@ platform :android do
     end
 
   desc "Build, ulpoad aab to FB, delete build"
-  lane :all_lanes do 
-    build_package
-    upload_to_firebase
-    clean_up
+    lane :all_lanes do 
+      build_package
+      upload_to_firebase
+      clean_up
+    end
 end
