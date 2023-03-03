@@ -37,9 +37,10 @@ jobs:
 
       - name: Install Fastlane and Bundle
         run: |
+          cd android
           gem install fastlane
           bundle install
-          bundle update
+          cd ..
       - name: Build and Publish Mobile App
         run: |
           cd android
