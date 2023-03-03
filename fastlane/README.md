@@ -15,13 +15,37 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android distribute
+### android build_package
 
 ```sh
-[bundle exec] fastlane android distribute
+[bundle exec] fastlane android build_package
 ```
 
-RN Production App
+Build apk
+
+### android upload_to_firebase
+
+```sh
+[bundle exec] fastlane android upload_to_firebase
+```
+
+Upload aab to Firebase App Distribution
+
+### android clean_up
+
+```sh
+[bundle exec] fastlane android clean_up
+```
+
+Delete the build directory, generated apk or aab
+
+### android all_lanes
+
+```sh
+[bundle exec] fastlane android all_lanes
+```
+
+Build, ulpoad aab to FB, delete build
 
 ----
 
