@@ -8,7 +8,7 @@ platform :android do
   desc "Build apk"
     lane :build_package do
         gradle(
-            project_dir: "./android",
+            project_dir: "android",
             task: 'assemble',
             build_type: 'Release',
             properties: {
