@@ -35,9 +35,11 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      - name: Install Fastlane
+      - name: Install Fastlane and Bundle
         run: |
           gem install fastlane
+          bundle install
+          bundle update
       - name: Build and Publish Mobile App
         run: |
           cd android
