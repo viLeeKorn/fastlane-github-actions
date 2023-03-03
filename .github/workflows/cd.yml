@@ -42,7 +42,7 @@ jobs:
       - name: Build and Publish Mobile App
         run: |
           cd android
-          bundle exec fastlane android all_lanes
+          fastlane all_lanes
         env:
           ANDROID_UPLOAD_STORE_FILE: '${{ secrets.ANDROID_UPLOAD_STORE_FILE }}'
           ANDROID_UPLOAD_STORE_FILE_PASSPHRASE: '${{ secrets.ANDROID_UPLOAD_STORE_FILE_PASSPHRASE }}'
