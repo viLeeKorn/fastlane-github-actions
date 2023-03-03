@@ -2,18 +2,21 @@ name: deploy_to_fb_and_bump_tag
 
 on:
   push:
-    branches: - master
+    branches: 
+      - master
 
 jobs:
   build-production:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout Repository on Github VM          echo "${{ secrets.ANDROID_UPLOAD_STORE_FILE}}" > release-key.keystore
-        uses: actions/checkout@v2
-                run: |
+      - name: Add decrepted file
+        run: |
           echo "${{ secrets.ANDROID_UPLOAD_STORE_FILE}}" > release-key.keystore.asc
           gpg -d passphrase "${{ secrests.ANDROID_UPLOAD_STORE_FILE_PASSPHRASE }}" --batch release-key.keystore.asc > android/app/release-key.keystore
+      
+      - name: Checkout Repository on Github VM
+        uses: actions/checkout@v2
 
       - name: Run Node in VM
         uses: actions/setup-node@master
@@ -45,7 +48,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        run
       - uses: actions/setup-node@master
 
       - name: Install Dependencies
