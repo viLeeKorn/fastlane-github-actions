@@ -16,7 +16,7 @@ jobs:
       - name: Decrypting keystore
         run: |
           echo "${{ secrets.ANDROID_UPLOAD_STORE_FILE}}" > release-key.keystore.asc
-          gpg -d passphrase "${{ secrets.ANDROID_UPLOAD_STORE_FILE_PASSPHRASE }}" --batch release-key.keystore.asc > android/app/release-key.keystore
+          gpg -d passphrase "${{ secrets.ANDROID_UPLOAD_STORE_FILE_PASSPHRASE }}" release-key.keystore.asc > android/app/release-key.keystore
 
       - name: Run Node in VM
         uses: actions/setup-node@master
