@@ -34,7 +34,6 @@ platform :android do
     lane :clean_up do
         gradle(
             task: "clean",
-            project_dir: "android",
         )
     end
 
