@@ -1,9 +1,3 @@
-fastlane_require 'dotenv'
-
-before_all do
-  Dotenv.overload('.env')
-end
-
 platform :android do  
   desc "Build apk"
     lane :build_package do
