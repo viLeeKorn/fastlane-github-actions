@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository on Github VM
         uses: actions/checkout@v2
+
+      - name: Decrypting keystore
         run: |
           echo "${{ secrets.ANDROID_UPLOAD_STORE_FILE}}" > release-key.keystore.asc
           gpg -d passphrase "${{ secrets.ANDROID_UPLOAD_STORE_FILE_PASSPHRASE }}" --batch release-key.keystore.asc > android/app/release-key.keystore
