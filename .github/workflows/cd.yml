@@ -33,12 +33,11 @@ jobs:
           ruby-version: 2.7.6
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn
 
       - name: Install Fastlane
         run: |
-          bundle install
-          bundle update fastlane
+          gem install fastlane
       - name: Build and Publish Mobile App
         run: |
           cd android
