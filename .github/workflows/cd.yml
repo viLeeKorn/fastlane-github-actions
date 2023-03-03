@@ -7,11 +7,16 @@ on:
 
 jobs:
   build-production:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository on Github VM
         uses: actions/checkout@v2
+
+      - name: Set up our JDK environment # setup JDK environment: mandatory as we need to build  android project
+      uses: actions/setup-java@v1.4.3
+      with:
+        java-version: 1.8
 
       - name: Decrypting android keys
         run: sh ./.github/scripts/decrypt_android_keys.sh

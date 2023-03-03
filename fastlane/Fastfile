@@ -9,6 +9,8 @@ platform :android do
     lane :build_package do
         gradle(
             project_dir: "android",
+            task: 'assemble',
+            build_type: 'Release',
             properties: {
                 "android.injected.signing.store.file" => ENV["ANDROID_UPLOAD_STORE_FILE"],
                 "android.injected.signing.store.password" => ENV["ANDROID_UPLOAD_STORE_PASSWORD"],
