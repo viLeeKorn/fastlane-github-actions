@@ -67,6 +67,8 @@ jobs:
 
       - name: Get Version Number
         run: |
+          git config --global user.email "vileekorn@gmail.com"
+          git config --global user.name "Victor Lee Korn"
           export PACKAGE_VERSION=$(node -p -e 'require("./package.json").version')
           git tag -a "$PACKAGE_VERSION" -m "latest version"
           git push origin --tags
