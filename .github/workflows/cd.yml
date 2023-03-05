@@ -67,8 +67,8 @@ jobs:
 
       - name: Get Version Number
         run: |
-          git config --local user.email "vileekorn@gmail.com"
-          git config --local user.name "viLeeKorn"
           export PACKAGE_VERSION=$(node -p -e 'require("./package.json").version')
           git tag -a "$PACKAGE_VERSION" -m "latest version"
           git push origin --tags
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
